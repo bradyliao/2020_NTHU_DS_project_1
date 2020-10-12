@@ -82,7 +82,7 @@ void fileInput(string fileName, int &row, int &column, queue<block> &blocksQueue
 
 
 int main(int argc, const char * argv[]) {
-   int boardRow = 0, boardColumn = 1;
+   int boardRow = 0, boardColumn = 0;
    queue<block> blocksQueue ;
    
    if (argc == 2) {
@@ -96,12 +96,14 @@ int main(int argc, const char * argv[]) {
       }
        */
    }
+   else
+   {
+      return 1 ;
+   }
    
-   
-   
-   
+
    // create game board
-   bool gameBoar[boardRow+1][boardColumn+1] = {true};
+   bool gameBoar[boardRow+1][boardColumn+1];
    
    
    
