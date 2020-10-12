@@ -74,16 +74,7 @@ void fileInput(string fileName, int &row, int &column, queue<block> &blocksQueue
          break ;
       block currentInputBlock = block(currentBlockType, currentBlockInitialColumn, currentBlockLRmove) ;
       blocksQueue.push(currentInputBlock) ;
-      
-      /*
-       test input block
-       cout << blocksQueue.back().getType() << endl ;
-       */
    }
-   
-   
-   
-   
 }
 
 
@@ -91,19 +82,26 @@ void fileInput(string fileName, int &row, int &column, queue<block> &blocksQueue
 
 
 int main(int argc, const char * argv[]) {
-   int boardRow, boardColumn ;
+   int boardRow = 0, boardColumn = 1;
    queue<block> blocksQueue ;
    
    if (argc == 2) {
       fileInput(argv[1], boardRow, boardColumn, blocksQueue) ;
-      //test input
+      /*
+       //test input
       cout << boardRow << ' ' << boardColumn << endl ;
-      
       while(!blocksQueue.empty()){
          cout << blocksQueue.front().getType() << " " << blocksQueue.front().getInitialColumn() << " " << blocksQueue.front().getLRmove() << endl ;
          blocksQueue.pop() ;
       }
+       */
    }
+   
+   
+   
+   
+   // create game board
+   bool gameBoar[boardRow+1][boardColumn+1] = {true};
    
    
    
