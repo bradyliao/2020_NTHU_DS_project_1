@@ -48,8 +48,7 @@ public:
       else if (type == "T3"){
          miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[0][2] = 1 ;   miniBlock[1][1] = 1 ;
       }
-      else if (type == "T4")
-      {
+      else if (type == "T4"){
          miniBlock[0][0] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][0] = 1 ;
       }
       
