@@ -39,99 +39,93 @@ public:
    
    void assignBlockArray()
    {
-      if (type == "T1")
+      if (type == "T1"){
+         miniBlock[0][1] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[1][2] = 1 ;
+      }
+      else if (type == "T2"){
+         miniBlock[0][1] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][1] = 1 ;
+      }
+      else if (type == "T3"){
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[0][2] = 1 ;   miniBlock[1][1] = 1 ;
+      }
+      else if (type == "T4")
       {
-         bool miniBlock[4][4] = {{0,1,0,0}, {1,1,1,0}, {0,0,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][0] = 1 ;
       }
       
-      if (type == "T2")
+      else if (type == "L1")
       {
-         bool miniBlock[4][4] = {{0,1,0,0}, {1,1,0,0}, {0,1,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[2][0] = 1 ;
       }
       
-      if (type == "T3")
+      else if (type == "L2")
       {
-         bool miniBlock[4][4] = {{1,1,1,0}, {0,1,0,0}, {0,0,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[1][2] = 1 ;
       }
       
-      if (type == "T4")
+      else if (type == "L3")
       {
-         bool miniBlock[4][4] = {{1,0,0,0}, {1,1,0,0}, {1,0,0,0}, {0,0,0,0}} ;
+         miniBlock[0][1] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][0] = 1 ;   miniBlock[2][1] = 1 ;
       }
       
-      if (type == "L1")
+      else if (type == "L4")
       {
-         bool miniBlock[4][4] = {{1,1,0,0}, {1,0,0,0}, {1,0,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[0][2] = 1 ;   miniBlock[1][2] = 1 ;
       }
       
-      if (type == "L2")
+      else if (type == "J1")
       {
-         bool miniBlock[4][4] = {{1,0,0,0}, {1,1,1,0}, {0,0,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][1] = 1 ;
       }
       
-      if (type == "L3")
+      else if (type == "J2")
       {
-         bool miniBlock[4][4] = {{0,1,0,0}, {0,1,0,0}, {1,1,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[0][2] = 1 ;   miniBlock[1][0] = 1 ;
       }
       
-      if (type == "L4")
+      else if (type == "J3")
       {
-         bool miniBlock[4][4] = {{1,1,1,0}, {0,0,1,0}, {0,0,0,0}, {0,0,0,0}} ;
+         miniBlock[0][0] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[2][0] = 1 ;   miniBlock[2][1] = 1 ;
       }
       
-      if (type == "J1")
+      else if (type == "J4")
       {
-         <#statements#>
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[0][2] = 1 ;   miniBlock[1][2] = 1 ;
       }
       
-      if (type == "J2")
+      else if (type == "S1")
       {
-         <#statements#>
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[1][2] = 1 ;
       }
       
-      if (type == "J3")
+      else if (type == "S2")
       {
-         <#statements#>
+         miniBlock[0][1] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][0] = 1 ;
       }
       
-      if (type == "J4")
+      else if (type == "Z1")
       {
-         <#statements#>
+         miniBlock[0][1] = 1 ;   miniBlock[1][2] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;
       }
       
-      if (type == "S1")
+      else if (type == "Z2")
       {
-         <#statements#>
+         miniBlock[0][0] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;   miniBlock[2][1] = 1 ;
       }
       
-      if (type == "S2")
+      else if (type == "I1")
       {
-         <#statements#>
+         miniBlock[0][0] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[2][0] = 1 ;   miniBlock[3][0] = 1 ;
       }
       
-      if (type == "Z1")
+      else if (type == "I2")
       {
-         <#statements#>
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[0][2] = 1 ;   miniBlock[0][3] = 1 ;
       }
       
-      if (type == "Z2")
+      else if (type == "O")
       {
-         <#statements#>
-      }
-      
-      if (type == "I1")
-      {
-         <#statements#>
-      }
-      
-      if (type == "I2")
-      {
-         <#statements#>
-      }
-      
-      if (type == "O")
-      {
-         <#statements#>
+         miniBlock[0][0] = 1 ;   miniBlock[0][1] = 1 ;   miniBlock[1][0] = 1 ;   miniBlock[1][1] = 1 ;
       }
       
    }
@@ -139,7 +133,7 @@ public:
 private:
    string type ;
    int initialColumn, LRmove ;
-   bool miniBlock[4][4] ;
+   bool miniBlock[4][4] = {{0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}} ;
 };
 
 
