@@ -151,6 +151,7 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
+
 void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
 {
    for (int row = boardRow; row > 0; row--)
@@ -159,21 +160,25 @@ void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
       {
          cout << gameBoard[row][column] << " " ;
       }
-      
       cout << gameBoard[row][boardColumn] << endl ;
-      
    }
-   
-   
 }
 
 
 
-
-
-
-
-
+/* display board with boundary 1's around for testing
+void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
+{
+   for (int row = boardRow; row >= 0; row--)
+   {
+      for (int column = 0; column <= boardColumn+3; column++)
+      {
+         cout << gameBoard[row][column] << " " ;
+      }
+      cout << gameBoard[row][boardColumn+4] << endl ;
+   }
+}
+*/
 
 
 
@@ -224,18 +229,36 @@ int main(int argc, const char * argv[]) {
    bool **gameBoard ;
    gameBoard = new bool*[boardRow+1] ;
    
-   for (int row = 0; row <= boardRow+1; row++) {
-      gameBoard[row] = new bool[boardColumn+1] ;
-      for (int column = 0; column<= boardColumn+1; column++)
+   
+   
+   
+   for (int row = 0; row <= boardRow; row++)
+   {
+      gameBoard[row] = new bool[boardColumn+5] ; // 1(index 0) + 4 (4 columns to check for the most right position)
+      gameBoard[row][0] = 1 ; // 1's for left boundary
+      for (int column = 1; column <= boardColumn; column++)
          gameBoard[row][column] = 0 ;
+      for (int column = boardColumn + 1; column <= boardColumn + 4; column++)
+         gameBoard[row][column] = 1 ;
    }
+   
+   // 1's for ground
+   for (int column = 0 ; column <= boardColumn+4 ; column++)
+   {
+      gameBoard[0][column] = 1 ;
+   }
+   
    
    
    // Game Loop
    while (!blocksQueue.empty())
    {
       
+      // down move
       
+      
+      
+      // LRmove
       
       
       
@@ -254,17 +277,6 @@ int main(int argc, const char * argv[]) {
    
    // display board
    displayBoard(gameBoard, boardRow, boardColumn) ;
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    
    
    return 0;
