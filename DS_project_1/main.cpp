@@ -92,7 +92,7 @@ public:
       yCoordinate = boardRow + initialRowOffset ;
    }
    
-   void moveRight(bool **gameBoard)
+   bool moveRight(bool **gameBoard)
    {
       bool ableToMove = true ;
       for (int i = 0; i < 4; i++)
@@ -101,7 +101,7 @@ public:
          {
             if (blockArray[blockTypeIndex][i][j] == 1)
             {
-               if (gameBoard[yCoordinate][xCoordinate+1] == 1)
+               if (gameBoard[yCoordinate+i][xCoordinate+j+1] == 1)
                {
                   ableToMove = false ;
                }
@@ -112,11 +112,13 @@ public:
       if (ableToMove)
       {
          xCoordinate++ ;
+         LRmove-- ;
       }
+      return ableToMove ;
    }
    
    
-   void moveLeft(bool **gameBoard)
+   bool moveLeft(bool **gameBoard)
    {
       bool ableToMove = true ;
       for (int i = 0; i < 4; i++)
@@ -125,7 +127,7 @@ public:
          {
             if (blockArray[blockTypeIndex][i][j] == 1)
             {
-               if (gameBoard[yCoordinate][xCoordinate-1] == 1)
+               if (gameBoard[yCoordinate+i][xCoordinate+j-1] == 1)
                {
                   ableToMove = false ;
                }
@@ -136,39 +138,15 @@ public:
       if (ableToMove)
       {
          xCoordinate-- ;
+         LRmove++ ;
       }
+      return ableToMove ;
    }
    
-   /*
-   void moveDown(bool **gameBoard)
+   
+   
+   bool ableToMoveDown(bool **gameBoard)
    {
-      bool ableToMove = true ;
-      for (int i = 0; i < 4; i++)
-      {
-         for (int j = 0; j < 4; j++)
-         {
-            if (blockArray[blockTypeIndex][i][j] == 1)
-            {
-               if (gameBoard[yCoordinate-1][xCoordinate] == 1)
-               {
-                  ableToMove = false ;
-               }
-            }
-         }
-      }
-      
-      if (ableToMove)
-      {
-         yCoordinate-- ;
-      }
-   }
-   
-   */
-   
-   
-   bool moveDown(bool **gameBoard)
-   {
-      bool ableToMove = true ;
       for (int i = 0; i < 4; i++)
       {
          for (int j = 0; j < 4; j++)
@@ -177,17 +155,19 @@ public:
             {
                if (gameBoard[yCoordinate+i-1][xCoordinate+j] == 1)
                {
-                  ableToMove = false ;
+                  return false ;
                }
             }
          }
       }
-      
-      if (ableToMove)
-      {
-         yCoordinate-- ;
-      }
-      return ableToMove ;
+      return true ;
+   }
+   
+   
+   
+   void moveDown(bool **gameBoard)
+   {
+      yCoordinate-- ;
    }
    
    
@@ -199,7 +179,6 @@ public:
          {
             if (blockArray[blockTypeIndex][i][j] == 1)
                gameBoard[yCoordinate+i][xCoordinate+j] = blockArray[blockTypeIndex][i][j] ;
-            
          }
       }
       //testing
@@ -260,7 +239,7 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
       occupied = 0 ;
       for (int column = 1; column <= boardColumn; column++)
       {
-         if (gameBoard[row][column] == true)
+         if (gameBoard[row][column] == 1)
             occupied++ ;
       }
       
@@ -275,7 +254,7 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
          }
          // the toppest row to be 0s
          for (int j = 1; j <= boardColumn; j++)
-            gameBoard[boardColumn][j] = 0 ;
+            gameBoard[boardRow][j] = 0 ;
       }
    }
 }
@@ -386,12 +365,24 @@ int main(int argc, const char * argv[]) {
       // set initial y coordinate
       blocksQueue.front().setYCoordinate(boardRow) ;
       
-      // down move
-      while (blocksQueue.front().moveDown(gameBoard)){} ;
-      blocksQueue.front().writeBlockToBoard(gameBoard, boardRow, boardColumn) ;
+      // down move (1st time)
+      while (blocksQueue.front().ableToMoveDown(gameBoard))
+         blocksQueue.front().moveDown(gameBoard) ;
       
       // LRmove
+      // right move
+      while (blocksQueue.front().getLRmove() > 0)
+         blocksQueue.front().moveRight(gameBoard) ;
+      // left move
+      while (blocksQueue.front().getLRmove() < 0)
+         blocksQueue.front().moveLeft(gameBoard) ;
       
+      // down move (2nd time)
+      while (blocksQueue.front().ableToMoveDown(gameBoard))
+         blocksQueue.front().moveDown(gameBoard) ;
+      
+      // write block to game board
+      blocksQueue.front().writeBlockToBoard(gameBoard, boardRow, boardColumn) ;
       
       
       // remove filled rows
@@ -406,6 +397,7 @@ int main(int argc, const char * argv[]) {
    
    // display board
    displayBoard(gameBoard, boardRow, boardColumn) ;
+   cout << endl ;
    displayBoardWithBoundary(gameBoard, boardRow, boardColumn) ;
    
    return 0;
