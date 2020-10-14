@@ -328,18 +328,8 @@ int main(int argc, const char * argv[]) {
 
    
    // create game board
-   /*
-   bool gameBoard[boardRow+1][boardColumn+1];
-   for (int i = 0; i <= boardRow; i++)
-      for (int j = 0; j <= boardColumn; j++)
-         gameBoard[i][j] = 0 ;
-   */
-   
    bool **gameBoard ;
    gameBoard = new bool*[boardRow+1] ;
-   
-   
-   
    
    for (int row = 0; row <= boardRow; row++)
    {
