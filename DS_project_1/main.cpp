@@ -125,9 +125,11 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
    int occupied ;
    
    // loop for goint through board rows
-   for (int row = boardRow; row > 0; row--) {
+   for (int row = boardRow; row > 0; row--)
+   {
       occupied = 0 ;
-      for (int column = 1; column <= boardColumn; column++) {
+      for (int column = 1; column <= boardColumn; column++)
+      {
          if (gameBoard[row][column] == true)
             occupied++ ;
       }
@@ -149,8 +151,21 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
-
-
+void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
+{
+   for (int row = boardRow; row > 0; row--)
+   {
+      for (int column = 1; column < boardColumn; column++)
+      {
+         cout << gameBoard[row][column] << " " ;
+      }
+      
+      cout << gameBoard[row][boardColumn] << endl ;
+      
+   }
+   
+   
+}
 
 
 
@@ -227,17 +242,18 @@ int main(int argc, const char * argv[]) {
       
       
       
+      // remove filled rows
+      removeFilledRow(gameBoard, boardRow, boardColumn) ;
       
-      
-      
+      //check over boundary
       
       // pop out the block just processed
       blocksQueue.pop() ;
    }
    
    
-   
-   
+   // display board
+   displayBoard(gameBoard, boardRow, boardColumn) ;
    
    
    
