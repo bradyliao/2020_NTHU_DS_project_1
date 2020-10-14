@@ -11,6 +11,12 @@
 
 using namespace std ;
 
+
+void displayBoard(bool **gameBoard, int boardRow, int boardColumn) ;
+
+
+
+
 bool blockArray[19][4][4] =
 {
    {{0,1,0,0}, {1,1,1,0}, {0,0,0,0}, {0,0,0,0}}, //T1    0
@@ -40,9 +46,9 @@ public:
    block(string type, int initialColumn, int LRmove)
    {
       this-> type = type ;
-      this-> initialColumn = initialColumn ;
       this-> LRmove = LRmove ;
-      typeIndex = assignTypeIndex() ;
+      blockTypeIndex = assignBlockTypeIndex() ;
+      xCoordinate = initialColumn ;
    }
    
    string getType()
@@ -50,43 +56,167 @@ public:
       return type ;
    }
    
-   int getInitialColumn()
-   {
-      return initialColumn ;
-   }
    
    int getLRmove()
    {
       return LRmove ;
    }
    
-   int assignTypeIndex()
+   int assignBlockTypeIndex()
    {
-      if (type == "T1")     {  return 0 ; }
-      else if (type == "T2"){  return 1 ; }
-      else if (type == "T3"){  return 2 ; }
-      else if (type == "T4"){  return 3 ; }
-      else if (type == "L1"){  return 4 ; }
-      else if (type == "L2"){  return 5 ; }
-      else if (type == "L3"){  return 6 ; }
-      else if (type == "L4"){  return 7 ; }
-      else if (type == "J1"){  return 8 ; }
-      else if (type == "J2"){  return 9 ; }
-      else if (type == "J3"){  return 10 ; }
-      else if (type == "J4"){  return 11 ; }
-      else if (type == "S1"){  return 12 ; }
-      else if (type == "S2"){  return 13 ; }
-      else if (type == "Z1"){  return 14 ; }
-      else if (type == "Z2"){  return 15 ; }
-      else if (type == "I1"){  return 16 ; }
-      else if (type == "I2"){  return 17 ; }
-      else if (type == "O"){   return 18 ; }
+      if (type == "T1")     {  initialRowOffset = -1 ;  return 0 ; }
+      else if (type == "T2"){  initialRowOffset = -2 ;  return 1 ; }
+      else if (type == "T3"){  initialRowOffset = -1 ;  return 2 ; }
+      else if (type == "T4"){  initialRowOffset = -2 ;  return 3 ; }
+      else if (type == "L1"){  initialRowOffset = -2 ;  return 4 ; }
+      else if (type == "L2"){  initialRowOffset = -1 ;  return 5 ; }
+      else if (type == "L3"){  initialRowOffset = -2 ;  return 6 ; }
+      else if (type == "L4"){  initialRowOffset = -1 ;  return 7 ; }
+      else if (type == "J1"){  initialRowOffset = -2 ;  return 8 ; }
+      else if (type == "J2"){  initialRowOffset = -1 ;  return 9 ; }
+      else if (type == "J3"){  initialRowOffset = -2 ;  return 10 ; }
+      else if (type == "J4"){  initialRowOffset = -1 ;  return 11 ; }
+      else if (type == "S1"){  initialRowOffset = -1 ;  return 12 ; }
+      else if (type == "S2"){  initialRowOffset = -2 ;  return 13 ; }
+      else if (type == "Z1"){  initialRowOffset = -1 ;  return 14 ; }
+      else if (type == "Z2"){  initialRowOffset = -2 ;  return 15 ; }
+      else if (type == "I1"){  initialRowOffset = -3 ;  return 16 ; }
+      else if (type == "I2"){  initialRowOffset = 0  ;  return 17 ; }
+      else if (type == "O"){   initialRowOffset = -1 ;  return 18 ; }
       else return -1 ;
    }
    
+   
+   void setYCoordinate(int boardRow)
+   {
+      yCoordinate = boardRow + initialRowOffset ;
+   }
+   
+   void moveRight(bool **gameBoard)
+   {
+      bool ableToMove = true ;
+      for (int i = 0; i < 4; i++)
+      {
+         for (int j = 0; j < 4; j++)
+         {
+            if (blockArray[blockTypeIndex][i][j] == 1)
+            {
+               if (gameBoard[yCoordinate][xCoordinate+1] == 1)
+               {
+                  ableToMove = false ;
+               }
+            }
+         }
+      }
+      
+      if (ableToMove)
+      {
+         xCoordinate++ ;
+      }
+   }
+   
+   
+   void moveLeft(bool **gameBoard)
+   {
+      bool ableToMove = true ;
+      for (int i = 0; i < 4; i++)
+      {
+         for (int j = 0; j < 4; j++)
+         {
+            if (blockArray[blockTypeIndex][i][j] == 1)
+            {
+               if (gameBoard[yCoordinate][xCoordinate-1] == 1)
+               {
+                  ableToMove = false ;
+               }
+            }
+         }
+      }
+      
+      if (ableToMove)
+      {
+         xCoordinate-- ;
+      }
+   }
+   
+   /*
+   void moveDown(bool **gameBoard)
+   {
+      bool ableToMove = true ;
+      for (int i = 0; i < 4; i++)
+      {
+         for (int j = 0; j < 4; j++)
+         {
+            if (blockArray[blockTypeIndex][i][j] == 1)
+            {
+               if (gameBoard[yCoordinate-1][xCoordinate] == 1)
+               {
+                  ableToMove = false ;
+               }
+            }
+         }
+      }
+      
+      if (ableToMove)
+      {
+         yCoordinate-- ;
+      }
+   }
+   
+   */
+   
+   
+   bool moveDown(bool **gameBoard)
+   {
+      bool ableToMove = true ;
+      for (int i = 0; i < 4; i++)
+      {
+         for (int j = 0; j < 4; j++)
+         {
+            if (blockArray[blockTypeIndex][i][j] == 1)
+            {
+               if (gameBoard[yCoordinate+i-1][xCoordinate+j] == 1)
+               {
+                  ableToMove = false ;
+               }
+            }
+         }
+      }
+      
+      if (ableToMove)
+      {
+         yCoordinate-- ;
+      }
+      return ableToMove ;
+   }
+   
+   
+   void writeBlockToBoard(bool **gameBoard, int boardRow, int boardColumn)
+   {
+      for (int i = 0; i < 4; i++)
+      {
+         for (int j = 0; j < 4; j++)
+         {
+            if (blockArray[blockTypeIndex][i][j] == 1)
+               gameBoard[yCoordinate+i][xCoordinate+j] = blockArray[blockTypeIndex][i][j] ;
+            
+         }
+      }
+      //testing
+      //displayBoard(gameBoard, boardRow, boardColumn) ;
+      //cout << endl ;
+   }
+   
+   
+   
+   
+   
+   
+   
+   
 private:
    string type ;
-   int initialColumn, LRmove, typeIndex, initialRowOffset ;
+   int LRmove, blockTypeIndex, initialRowOffset, xCoordinate, yCoordinate ;
 };
 
 
@@ -166,8 +296,8 @@ void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
 
 
 
-/* display board with boundary 1's around for testing
-void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
+//display board with boundary 1's around for testing
+void displayBoardWithBoundary(bool **gameBoard, int boardRow, int boardColumn)
 {
    for (int row = boardRow; row >= 0; row--)
    {
@@ -178,7 +308,7 @@ void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
       cout << gameBoard[row][boardColumn+4] << endl ;
    }
 }
-*/
+
 
 
 
@@ -253,15 +383,14 @@ int main(int argc, const char * argv[]) {
    // Game Loop
    while (!blocksQueue.empty())
    {
+      // set initial y coordinate
+      blocksQueue.front().setYCoordinate(boardRow) ;
       
       // down move
-      
-      
+      while (blocksQueue.front().moveDown(gameBoard)){} ;
+      blocksQueue.front().writeBlockToBoard(gameBoard, boardRow, boardColumn) ;
       
       // LRmove
-      
-      
-      
       
       
       
@@ -277,7 +406,7 @@ int main(int argc, const char * argv[]) {
    
    // display board
    displayBoard(gameBoard, boardRow, boardColumn) ;
-   
+   displayBoardWithBoundary(gameBoard, boardRow, boardColumn) ;
    
    return 0;
 }
