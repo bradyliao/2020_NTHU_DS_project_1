@@ -89,7 +89,8 @@ public:
    
    void setYCoordinate(int boardRow)
    {
-      yCoordinate = boardRow + initialRowOffset ;
+      //yCoordinate = boardRow + initialRowOffset ;
+      yCoordinate = boardRow + 1 ;
    }
    
    bool moveRight(bool **gameBoard)
@@ -181,9 +182,6 @@ public:
                gameBoard[yCoordinate+i][xCoordinate+j] = blockArray[blockTypeIndex][i][j] ;
          }
       }
-      //testing
-      //displayBoard(gameBoard, boardRow, boardColumn) ;
-      //cout << endl ;
    }
    
    
@@ -278,7 +276,7 @@ void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
 //display board with boundary 1's around for testing
 void displayBoardWithBoundary(bool **gameBoard, int boardRow, int boardColumn)
 {
-   for (int row = boardRow; row >= 0; row--)
+   for (int row = boardRow+4; row >= 0; row--)
    {
       for (int column = 0; column <= boardColumn+3; column++)
       {
@@ -289,6 +287,21 @@ void displayBoardWithBoundary(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
+// check over upper bound (over->true, within bound->false)
+bool checkOverUpperBound(bool **gameBoard, int boardRow, int boardColumn)
+{
+   for (int column = 1; column <= boardColumn; column++)
+   {
+      if (gameBoard[boardRow+1][column] == 1)
+      {
+         // if block is over upper bound, return true
+         cout << "Game ended, you lose. Blocks over boundary." << endl ;
+         return true ;
+      }
+   }
+   //if no blocks over upper bound, return false
+   return false ;
+}
 
 
 
@@ -329,9 +342,9 @@ int main(int argc, const char * argv[]) {
    
    // create game board
    bool **gameBoard ;
-   gameBoard = new bool*[boardRow+1] ;
+   gameBoard = new bool*[boardRow+5] ; // 1(index 0) + 4 (4 rows above for dropping blocks)
    
-   for (int row = 0; row <= boardRow; row++)
+   for (int row = 0; row <= boardRow+4; row++) // 4 (4 rows above for dropping blocks)
    {
       gameBoard[row] = new bool[boardColumn+5] ; // 1(index 0) + 4 (4 columns to check for the most right position)
       gameBoard[row][0] = 1 ; // 1's for left boundary
@@ -346,6 +359,17 @@ int main(int argc, const char * argv[]) {
    {
       gameBoard[0][column] = 1 ;
    }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    
    
    
@@ -378,7 +402,11 @@ int main(int argc, const char * argv[]) {
       // remove filled rows
       removeFilledRow(gameBoard, boardRow, boardColumn) ;
       
-      //check over boundary
+      //check over upper bound
+      if (checkOverUpperBound(gameBoard, boardRow, boardColumn))
+      {
+         break ;
+      }
       
       // pop out the block just processed
       blocksQueue.pop() ;
