@@ -312,7 +312,7 @@ void displayBoardWithBoundary(bool **gameBoard, int boardRow, int boardColumn)
    }
 }
 
- 
+
 // check over upper bound (over->true, within bound->false)
 bool checkOverUpperBound(bool **gameBoard, int boardRow, int boardColumn)
 {
@@ -452,3 +452,4 @@ int main(int argc, const char * argv[]) {
    
    return 0;
 }
+//testing github
