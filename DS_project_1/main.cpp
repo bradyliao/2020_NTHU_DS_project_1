@@ -12,11 +12,8 @@
 using namespace std ;
 
 
-void displayBoard(bool **gameBoard, int boardRow, int boardColumn) ;
 
-
-
-
+// block array data
 bool blockArray[19][4][4] =
 {
    {{0,1,0,0}, {1,1,1,0}, {0,0,0,0}, {0,0,0,0}}, //T1    0
@@ -40,6 +37,8 @@ bool blockArray[19][4][4] =
    {{1,1,0,0}, {1,1,0,0}, {0,0,0,0}, {0,0,0,0}}, //O     18
 } ;
 
+
+// classs for each block
 class block
 {
 public:
@@ -51,17 +50,20 @@ public:
       xCoordinate = initialColumn ;
    }
    
+   /* get block type (for testing purpose)
    string getType()
    {
       return type ;
    }
+   */
    
-   
+   // get the remaining left/right move of a block
    int getLRmove()
    {
       return LRmove ;
    }
    
+   // use block type to assign block type index in block data array
    int assignBlockTypeIndex()
    {
       if (type == "T1")     {  initialRowOffset = -1 ;  return 0 ; }
@@ -87,12 +89,15 @@ public:
    }
    
    
+   // set initial y coordinate (could be extened for features)
    void setYCoordinate(int boardRow)
    {
       //yCoordinate = boardRow + initialRowOffset ;
       yCoordinate = boardRow + 1 ;
    }
    
+   
+   // move the block to the right one step (with checking before the move and return successful move or not)
    bool moveRight(bool **gameBoard)
    {
       bool ableToMove = true ;
@@ -119,6 +124,7 @@ public:
    }
    
    
+   // move the block to the left one step (with checking before the move and return successful move or not)
    bool moveLeft(bool **gameBoard)
    {
       bool ableToMove = true ;
@@ -144,8 +150,7 @@ public:
       return ableToMove ;
    }
    
-   
-   
+   // check if the block is able to move down one step
    bool ableToMoveDown(bool **gameBoard)
    {
       for (int i = 0; i < 4; i++)
@@ -164,14 +169,14 @@ public:
       return true ;
    }
    
-   
-   
+   // move the block down one step
    void moveDown(bool **gameBoard)
    {
       yCoordinate-- ;
    }
    
    
+   // write the block to the game board
    void writeBlockToBoard(bool **gameBoard, int boardRow, int boardColumn)
    {
       for (int i = 0; i < 4; i++)
@@ -185,12 +190,7 @@ public:
    }
    
    
-   
-   
-   
-   
-   
-   
+// private data of a block
 private:
    string type ;
    int LRmove, blockTypeIndex, initialRowOffset, xCoordinate, yCoordinate ;
@@ -198,6 +198,7 @@ private:
 
 
 
+// input test case data with file name argv[1]
 void fileInput(string fileName, int &row, int &column, queue<block> &blocksQueue)
 {
    string currentBlockType ;
@@ -227,6 +228,33 @@ void fileInput(string fileName, int &row, int &column, queue<block> &blocksQueue
 }
 
 
+// create game board 2D array with boundary (1's) around to contain actual board
+bool **createGameBoard(int boardRow, int boardColumn)
+{
+   bool **gameBoard ;
+   gameBoard = new bool*[boardRow+5] ; // 1(index 0) + 4 (4 rows above for dropping blocks)
+   
+   for (int row = 0; row <= boardRow+4; row++) // 4 (4 rows above for dropping blocks)
+   {
+      gameBoard[row] = new bool[boardColumn+5] ; // 1(index 0) + 4 (4 columns to check for the most right position)
+      gameBoard[row][0] = 1 ; // 1's for left boundary
+      for (int column = 1; column <= boardColumn; column++)
+         gameBoard[row][column] = 0 ;
+      for (int column = boardColumn + 1; column <= boardColumn + 4; column++)
+         gameBoard[row][column] = 1 ; // 1's for right boundary
+   }
+   
+   // 1's for ground (bottom boundary)
+   for (int column = 0 ; column <= boardColumn+4 ; column++)
+   {
+      gameBoard[0][column] = 1 ;
+   }
+   
+   return gameBoard ;
+}
+
+
+// remove the rows that are filled
 void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
 {
    int occupied ;
@@ -258,7 +286,7 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
-
+// display the board in the terminal
 void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
 {
    for (int row = boardRow; row > 0; row--)
@@ -272,8 +300,7 @@ void displayBoard(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
-
-//display board with boundary 1's around for testing
+//display board with boundary 1's around in the terminal for testing purpose
 void displayBoardWithBoundary(bool **gameBoard, int boardRow, int boardColumn)
 {
    for (int row = boardRow+4; row >= 0; row--)
@@ -304,50 +331,47 @@ bool checkOverUpperBound(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
-bool **createGameBoard(int boardRow, int boardColumn)
+// output the game board to file (for final result)
+void outputGameBoardToFile(bool **gameBoard, int boardRow, int boardColumn, string fileName)
 {
-   bool **gameBoard ;
-   gameBoard = new bool*[boardRow+5] ; // 1(index 0) + 4 (4 rows above for dropping blocks)
+   ofstream output ;
+   output.open(fileName, ios::trunc) ;
    
-   for (int row = 0; row <= boardRow+4; row++) // 4 (4 rows above for dropping blocks)
+   if (output.is_open())
    {
-      gameBoard[row] = new bool[boardColumn+5] ; // 1(index 0) + 4 (4 columns to check for the most right position)
-      gameBoard[row][0] = 1 ; // 1's for left boundary
-      for (int column = 1; column <= boardColumn; column++)
-         gameBoard[row][column] = 0 ;
-      for (int column = boardColumn + 1; column <= boardColumn + 4; column++)
-         gameBoard[row][column] = 1 ;
+      for (int row = boardRow; row > 0; row--)
+      {
+         for (int column = 1; column < boardColumn; column++)
+         {
+            output << gameBoard[row][column] << " " ;
+         }
+         output << gameBoard[row][boardColumn] << endl ;
+      }
+      
+      cout << "The result is output to the file name: " << fileName << endl ;
    }
-   
-   // 1's for ground
-   for (int column = 0 ; column <= boardColumn+4 ; column++)
+   else
    {
-      gameBoard[0][column] = 1 ;
+      cout << "Unable to output file." << endl ;
    }
-   
-   return gameBoard ;
 }
 
 
-
+// delete game board 2D array to free the memory
 void deleteGameBoard(bool **gameBoard, int boardRow, int boardColumn)
 {
    for(int i = 0; i < boardRow+5; i++)
    {
       delete[] gameBoard[i];
    }
-       //Free the array of pointers
-       delete[] gameBoard;
-   
+   //Free the array of pointers
+   delete[] gameBoard;
 }
 
 
 
 
-
-
-
-
+// main function of the code
 int main(int argc, const char * argv[]) {
    int boardRow = 0, boardColumn = 0;
    queue<block> blocksQueue ;
@@ -371,36 +395,34 @@ int main(int argc, const char * argv[]) {
    
 
    
-   // create game board
-   
+   // create game board array
    bool **gameBoard = createGameBoard(boardRow, boardColumn) ;
    
    
    // Game Loop
    while (!blocksQueue.empty())
    {
-      // set initial y coordinate
+      // set initial y coordinate (could be extended for features)
       blocksQueue.front().setYCoordinate(boardRow) ;
       
-      // down move (1st time)
+      // down move loop (1st time)
       while (blocksQueue.front().ableToMoveDown(gameBoard))
          blocksQueue.front().moveDown(gameBoard) ;
       
       // LRmove
-      // right move
+      // right move loop
       while (blocksQueue.front().getLRmove() > 0)
          blocksQueue.front().moveRight(gameBoard) ;
-      // left move
+      // left move loop
       while (blocksQueue.front().getLRmove() < 0)
          blocksQueue.front().moveLeft(gameBoard) ;
       
-      // down move (2nd time)
+      // down move loop (2nd time)
       while (blocksQueue.front().ableToMoveDown(gameBoard))
          blocksQueue.front().moveDown(gameBoard) ;
       
       // write block to game board
       blocksQueue.front().writeBlockToBoard(gameBoard, boardRow, boardColumn) ;
-      
       
       // remove filled rows
       removeFilledRow(gameBoard, boardRow, boardColumn) ;
@@ -411,22 +433,23 @@ int main(int argc, const char * argv[]) {
          break ;
       }
       
-      // pop out the block just processed
+      // pop out the block just processed from queue
       blocksQueue.pop() ;
    }
    
    
    // display board
    displayBoard(gameBoard, boardRow, boardColumn) ;
-   
    /* display board with boundary for testing purpose
    cout << endl ;
    displayBoardWithBoundary(gameBoard, boardRow, boardColumn) ;
-    
-    */
+   */
    
+   // output result to file
+   outputGameBoardToFile(gameBoard, boardRow, boardColumn, "109062272_proj1.final") ;
+   
+   // delete game board array
    deleteGameBoard(gameBoard, boardRow, boardColumn) ;
-
    
    return 0;
 }
