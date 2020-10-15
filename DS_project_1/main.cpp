@@ -304,7 +304,29 @@ bool checkOverUpperBound(bool **gameBoard, int boardRow, int boardColumn)
 }
 
 
-
+bool **createGameBoard(int boardRow, int boardColumn)
+{
+   bool **gameBoard ;
+   gameBoard = new bool*[boardRow+5] ; // 1(index 0) + 4 (4 rows above for dropping blocks)
+   
+   for (int row = 0; row <= boardRow+4; row++) // 4 (4 rows above for dropping blocks)
+   {
+      gameBoard[row] = new bool[boardColumn+5] ; // 1(index 0) + 4 (4 columns to check for the most right position)
+      gameBoard[row][0] = 1 ; // 1's for left boundary
+      for (int column = 1; column <= boardColumn; column++)
+         gameBoard[row][column] = 0 ;
+      for (int column = boardColumn + 1; column <= boardColumn + 4; column++)
+         gameBoard[row][column] = 1 ;
+   }
+   
+   // 1's for ground
+   for (int column = 0 ; column <= boardColumn+4 ; column++)
+   {
+      gameBoard[0][column] = 1 ;
+   }
+   
+   return gameBoard ;
+}
 
 
 
@@ -341,6 +363,10 @@ int main(int argc, const char * argv[]) {
 
    
    // create game board
+   
+   bool **gameBoard = createGameBoard(boardRow, boardColumn) ;
+
+   /*
    bool **gameBoard ;
    gameBoard = new bool*[boardRow+5] ; // 1(index 0) + 4 (4 rows above for dropping blocks)
    
@@ -361,7 +387,7 @@ int main(int argc, const char * argv[]) {
    }
    
    
-   
+   */
    
    
    
