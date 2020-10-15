@@ -8,7 +8,6 @@
 #include <iostream>
 #include <fstream>
 #include <queue>
-
 using namespace std ;
 
 
@@ -118,8 +117,8 @@ public:
       if (ableToMove)
       {
          xCoordinate++ ;
-         LRmove-- ;
       }
+      LRmove-- ;
       return ableToMove ;
    }
    
@@ -145,8 +144,8 @@ public:
       if (ableToMove)
       {
          xCoordinate-- ;
-         LRmove++ ;
       }
+      LRmove++ ;
       return ableToMove ;
    }
    
