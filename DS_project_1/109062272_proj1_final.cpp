@@ -1,10 +1,3 @@
-//
-//  main.cpp
-//  DS_project_1
-//
-//  Created by Brady Liao on 10/12/20.
-//
-
 #include <iostream>
 #include <fstream>
 #include <queue>
@@ -62,7 +55,7 @@ public:
       return LRmove ;
    }
    
-   // use block type to assign block type index in block data array
+   // use block type to assign block type index for block data / shape array
    int assignBlockTypeIndex()
    {
       if (type == "T1")     {  initialRowOffset = -1 ;  return 0 ; }
@@ -441,10 +434,10 @@ int main(int argc, const char * argv[]) {
    
    // display board
    displayBoard(gameBoard, boardRow, boardColumn) ;
-   /* display board with boundary for testing purpose
-   cout << endl ;
-   displayBoardWithBoundary(gameBoard, boardRow, boardColumn) ;
-   */
+   //display board with boundary for testing purpose
+   //cout << endl ;
+   //displayBoardWithBoundary(gameBoard, boardRow, boardColumn) ;
+   
    
    // output result to file
    outputGameBoardToFile(gameBoard, boardRow, boardColumn, "109062272_proj1.final") ;
@@ -454,8 +447,3 @@ int main(int argc, const char * argv[]) {
    
    return 0;
 }
-
-
-
-
-
