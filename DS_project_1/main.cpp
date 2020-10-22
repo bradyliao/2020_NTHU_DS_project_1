@@ -256,10 +256,10 @@ bool **createGameBoard(int boardRow, int boardColumn)
 // remove the rows that are filled
 void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
 {
-   int occupied ;
+   int occupied , row = boardRow;
    
    // loop for goint through board rows
-   for (int row = boardRow; row > 0; row--)
+   while (row > 0)
    {
       occupied = 0 ;
       for (int column = 1; column <= boardColumn; column++)
@@ -272,15 +272,17 @@ void removeFilledRow(bool **gameBoard, int boardRow, int boardColumn)
       if (occupied == boardColumn)
       {
          // move above rows down 1
-         for (int i = row; i < boardRow; i++)
+         for (int i = row; i < boardRow+4; i++)
          {
             for (int j = 1; j <= boardColumn; j++)
                gameBoard[i][j] = gameBoard[i+1][j] ;
          }
          // the toppest row to be 0s
          for (int j = 1; j <= boardColumn; j++)
-            gameBoard[boardRow][j] = 0 ;
+            gameBoard[boardRow+4][j] = 0 ;
       }
+      else
+         row-- ;
    }
 }
 
